@@ -7,25 +7,31 @@ const express = require('express');
 
 const api = express()
 
+/**
+ * 用户注册
+ */
 api.post('/mylike/api/user/register', (req, res) => {
-    const requestBody = req.body ||　{}
-    console.log(requestBody)
-    registerUser(requestBody).then(data => {
-        res.send({
-            code:'0',
-            msg:data.msg || '注册成功！'
-        })
+    registerUser(req.body ||　{}).then(data => {
+        res.send(data)
     }).catch(err => {
-        res.send({
+        res.send(err || {
             code:'1',
             msg:err.msg || '注册失败，请稍后再试！'
         })
     })
 })
 
-api.get(`/mylike/api/user/test`, (req, res) => {
-    res.send({
-        msg:'hello world'
+/**
+ * 用户登录
+ */
+api.post('/mylike/api/user/login', (req, res) => {
+    userLogin(req.body ||　{}).then(data => {
+        res.send(data)
+    }).catch(err => {
+        res.send(err || {
+            code:'4',
+            msg:"账号或密码输入错误，请重新输入！"
+        })
     })
 })
 

@@ -24,7 +24,7 @@ const insertUser = (obj) => {
         pool.getConnection((poolErr, connection) => {
             if (poolErr) {
                 reject({
-                    msg:'新增用户失败！'
+                    msg:'服务器异常，请稍后再试！'
                 })
                 return
             }
@@ -55,8 +55,6 @@ const insertUser = (obj) => {
                 )
             `
             connection && connection.query(sql,(err, result) => {
-                console.log('err',JSON.stringify(err))
-                console.log('result',result)
                 connection.release();
                 if (err) {
                     switch (err.code) {
@@ -80,6 +78,46 @@ const insertUser = (obj) => {
     })
 }
 
+const queryUserAccount = (obj) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((poolErr, connection) => {
+            if (poolErr) {
+                reject({
+                    msg:'服务器异常，请稍后再试！'
+                })
+                return
+            }
+            const sql = `
+                SELECT 
+                    userAccount, password, userName
+                FROM 
+                    users 
+                WHERE 
+                    userAccount = '${obj.userAccount ||　''}'
+            `
+            connection && connection.query(sql, (err, result) => {
+                connection.release()
+                if (err) {
+                    // switch (err.code) {
+                    //     case value:
+                            
+                    //         break;
+                    
+                    //     default:
+                    //         break;
+                    // }
+                }
+                if (result) {
+                    return resolve(result)
+                }
+                reject(err)
+            })
+        })
+    })
+    
+}
+
 export default {
-    insertUser
+    insertUser,
+    queryUserAccount
 }
