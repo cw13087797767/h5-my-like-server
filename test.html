@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./node_modules/md5-js/md5.min.js"></script>
+    <script>
+        var hash = window.md5("");
+        // alert(hash);
+
+        const af = () => {
+            return new Promise((res,rej) => {
+                res()
+                return
+                console.log(123)
+            })
+        }
+        af().then(() => {console.log(456)}).catch()
+    </script> 
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "h5-my-like-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "dayjs": "^1.10.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "md5-js": "0.0.3",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.2"
+  }
+}
