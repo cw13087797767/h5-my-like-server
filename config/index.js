@@ -1,0 +1,1 @@
+export const ipAntPort = 'http://192.168.3.2:3000'

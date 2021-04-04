@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
     userId,         用户id
     userAccount,    登录账号
     password,       登录密码
+    password_un,    登录密码未加密
     userName,       昵称
     phone,          手机号码
     email,          邮箱
@@ -16,12 +17,14 @@ import dayjs from 'dayjs'
     userImg,        头像
     registerTime,   注册时间
     gradePoint      等级积分
+    isDel
  */
 export default class userModal {
     constructor(obj){
         this.userId = uuidv4().replace(/-/g,'') || null
         this.userAccount = obj.userAccount ||　null
         this.password = md5(obj.password) || null
+        this.password_un = obj.password || null
         this.userName = obj.userName || null
         this.phone = obj.phone || null
         this.email = obj.email || null
@@ -29,5 +32,6 @@ export default class userModal {
         this.userImg = obj.userImg || null
         this.registerTime = dayjs().valueOf() + ''
         this.gradePoint = '0'
+        this.isDel = 0
     }
 }
