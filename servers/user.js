@@ -228,5 +228,68 @@ export const getUserDetail = userId => {
     })
 }
 
-
+/**
+ * 修改用户信息
+ * @param {*} userId 
+ * @param {*} info 
+ * @returns 
+ */
+export const updateUserInfo = (
+    userId,
+    info,
+) => {
+    console.log('userId',userId)
+    console.log('info',info)
+    return new Promise((resolve, reject) => {
+        if (!userId) {
+            return resolve({
+                code:'20000',
+                msg:'请先登录'
+            })
+        }
+        const {
+            email,
+            phone,
+            userName
+        } = info
+        const updateTime = new Date().valueOf()
+        if (!email) {
+            return resolve({
+                code:'999',
+                msg:'邮箱不能为空'
+            })
+        }
+        if (!phone) {
+            return resolve({
+                code:'999',
+                msg:'电话号码不能为空'
+            })
+        }
+        if (!userName) {
+            return resolve({
+                code:'999',
+                msg:'用户名不能为空'
+            })
+        }
+        userController.UpdateUserInfo(userId, userName, email, phone, updateTime).then(res => {
+            if (res.changedRows === 1) {        
+                return resolve({
+                    code:'0',
+                    msg:'修改用户信息成功！'
+                })
+            }
+            console.log(res)
+            return resolve({
+                code:'999',
+                msg:'服务器异常'
+            })
+        }).catch(err => {
+            return reject({
+                msg: err.msg || '服务器异常',
+                code:'999',
+                data:null
+            })
+        })
+    })
+}
 

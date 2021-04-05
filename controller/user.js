@@ -199,6 +199,47 @@ const getUserDetail = userId => {
             })
         })
     })
+}
+
+/**
+ * 修改用户信息
+ * @param {*} userId 
+ * @param {*} userName 
+ * @param {*} email 
+ * @param {*} phone 
+ * @param {*} updateTime 
+ */
+const UpdateUserInfo = (userId, userName, email, phone, updateTime) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((poolErr, connection) => {
+            if (poolErr) {
+                return resolve({
+                    code:'999',
+                    msg:'服务器异常，请稍后再试！'
+                })
+            }
+            const sql = `
+                UPDATE 
+                    users 
+                SET 
+                    userName = '${userName}', 
+                    email = '${email}', 
+                    phone = '${phone}', 
+                    updateTime = '${updateTime}' 
+                WHERE 
+                    userId = '${userId}'
+                `
+            connection && connection.query(sql, (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return reject(err)
+                }
+                if (result) {
+                    return resolve(result)
+                }
+            })
+        })
+    })
     
 }
 
@@ -206,5 +247,6 @@ export default {
     insertUser,
     queryUserAccount,
     updateUserImg,
-    getUserDetail
+    getUserDetail,
+    UpdateUserInfo
 }

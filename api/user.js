@@ -3,7 +3,8 @@ import {
     updateUser,
     userLogin,
     updateUserImg,
-    getUserDetail
+    getUserDetail,
+    updateUserInfo
 } from '../servers/user'
 const express = require('express');
 import formidable from 'formidable'
@@ -75,7 +76,19 @@ api.post(`/mylike/api/user/userDetail`, (req, res) => {
             msg:"服务器异常"
         })
     })
+})
 
+// 修改用户信息
+api.post(`/mylike/api/user/update`, (req, res) => {
+    const userid = req.headers.userid
+    updateUserInfo(userid, req.body).then(data => {
+        res.send(data)
+    }).catch(err => {
+        res.send(err || {
+            code:'999',
+            msg:"服务器异常"
+        })
+    })
 })
 
 export default api
