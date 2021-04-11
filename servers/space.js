@@ -1,6 +1,7 @@
 import spaceController from '../controller/space'
 import { saveImgToPublic } from '../util'
 import {v4 as uuidv4} from 'uuid'
+import { ipAntPort } from '../config'
 
 /**
  * 新增日志
@@ -58,6 +59,61 @@ export const spaceInsert = (userId, obj, files) => {
             }).catch(err => {
                 reject(err)
             })
+        })
+    })
+    
+}
+
+/**
+ * 日记分页查询
+ * @param {*} userId 
+ * @param {*} obj 
+ * @returns 
+ */
+export const spaceList = (userId, obj) => {
+    return new Promise((resolve, reject) => {        
+        if (!userId) {
+            return resolve({
+                code:'20000',
+                msg:"请先登录"
+            })            
+        }
+        if (!obj.pageSize || !obj.pageNum) {
+            return resolve({
+                code:'999',
+                msg:"请输入正确的查询参数"
+            })
+        }
+        const queryObj = {
+            userId,
+            pageSize:+obj.pageSize,
+            pageNum:+obj.pageNum
+        }
+        spaceController.spaceList(queryObj).then(res => {
+            if (res) {
+                const list = res['0'] || []
+                const total = res['1'][0].total || 0
+                list.map(item => {
+                    item.img_url = item.img_url ? item.img_url.split(',').map(child => child = ipAntPort + child) : []
+                })
+                resolve({
+                    code:'0',
+                    data:{
+                        list,
+                        total,
+                        pageSize:+obj.pageSize,
+                        pageNum:+obj.pageNum
+                    }
+                })
+            } else {
+                resolve({
+                    code:'999',
+                    msg:'查询异常'
+                })
+            }
+        }).catch(err => {
+            console.log('err',err)
+            reject(err)
         })
     })
     

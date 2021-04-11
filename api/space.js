@@ -2,10 +2,14 @@ const express = require('express')
 import formidable from 'formidable'
 import { 
     spaceInsert,
+    spaceList
 } from '../servers/space'
 
 const api = express()
 
+/**
+ * 新增日记
+ */
 api.post(`/mylike/api/baseApp/space/insert`,(req, res) => {
     const userid = req.headers.userid
     const form = new formidable.IncomingForm()
@@ -25,6 +29,20 @@ api.post(`/mylike/api/baseApp/space/insert`,(req, res) => {
             })
         })
 
+    })
+})
+
+/**
+ * 日记分页查询
+ */
+api.get(`/mylike/api/baseApp/space/list`,(req, res) => {
+    spaceList(req.headers.userid, req.query).then(data => {
+        res.send(data)
+    }).catch(err => {
+        res.send({
+            code:'999',
+            msg:err || '查询失败'
+        })
     })
 })
 

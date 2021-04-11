@@ -11,7 +11,8 @@ const pool  = mysql.createPool({
     host:'localhost',
     user:'root',
     password:"13087797767Qq",
-    database:'h5_my_like'
+    database:'h5_my_like',
+    connectionLimit:0
 });
 /**
  * 插入用户
