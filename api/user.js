@@ -47,9 +47,9 @@ api.post(`/mylike/api/user/updateUserImg`, (req, res) => {
     const form = new formidable.IncomingForm()
     form.parse(req, (err, fields, files) => {
         if (err || !files) {
-            res.send(err || {
+            res.send({
                 code:'999',
-                msg:'更新头像失败'
+                msg:err || '更新头像失败'
             })
         }
         updateUserImg(userid, files).then(data => {

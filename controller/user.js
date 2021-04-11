@@ -1,4 +1,3 @@
-import { json } from 'body-parser';
 import mysql from 'mysql'
 
 // const connection = mysql.createConnection({

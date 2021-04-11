@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 const bodyParser = require("body-parser");
 import userApi from './api/user'
+import spaceApi from './api/space'
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(urlencodedParser)
 app.use(jsonParser)
 
 app.use(userApi)
+app.use(spaceApi)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
