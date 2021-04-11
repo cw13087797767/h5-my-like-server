@@ -21,13 +21,13 @@ const spaceInsert = obj => {
             const sql = `
                 INSERT INTO diarys 
                     ( 
-                        user_id, 
+                        userId, 
                         content, 
-                        img_url, 
+                        imgUrl, 
                         address, 
                         lng, 
                         lat, 
-                        create_time 
+                        createTime 
                     )
                 VALUES
                     (
@@ -72,25 +72,25 @@ const spaceList = obj => {
             const sql = `
                 SELECT SQL_CALC_FOUND_ROWS
                     a.id,
-                    a.user_id,
+                    a.userId,
                     a.content,
-                    a.img_url,
-                    a.create_time,
+                    a.imgUrl,
+                    a.createTime,
                     a.address,
                     a.lng,
                     a.lat,
-                    a.read_count,
-                    a.like_count,
-                    a.collect_count,
-                    a.comment_count,
-                    a.transport_count
+                    a.readCount,
+                    a.likeCount,
+                    a.collectCount,
+                    a.commentCount,
+                    a.transportCount
                 FROM
                     diarys as a
                 WHERE
-                    user_id = '${obj.userId}' 
-                    AND is_delete = 0 
+                    userId = '${obj.userId}' 
+                    AND isDelete = 0 
                 ORDER BY
-                    create_time DESC
+                    createTime DESC
                     LIMIT ${(obj.pageNum -1) * obj.pageSize},
                     ${obj.pageSize};
                 SELECT
@@ -107,9 +107,61 @@ const spaceList = obj => {
             })
         })
     })
+}
+
+/**
+ * 日记详情
+ * @param {*} obj 
+ * @returns 
+ */
+const spaceDetail = obj => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((poolErr, connetion) => {
+            if (poolErr) {
+                console.log(poolErr)
+                return reject({
+                    msg:'服务器异常，请稍后再试！'
+                })
+            }
+            const sql = `
+                SELECT
+                    id,
+                    userId,
+                    content,
+                    imgUrl,
+                    createTime,
+                    address,
+                    lng,
+                    lat,
+                    readCount,
+                    likeCount,
+                    collectCount,
+                    commentCount,
+                    transportCount
+                FROM
+                    diarys 
+                WHERE
+                    id = ${+obj.id} 
+                    AND userId = '${obj.userId}' 
+                    AND isDelete = 0
+            `
+            connetion && connetion.query(sql, (err, result) => {
+                if (err) {
+                    console.log('查询日记详情异常：', err)
+                    return reject({
+                        msg:err
+                    })
+                }
+                return resolve(result)
+            })
+        })
+    })
     
 }
+
+
 export default {
     spaceInsert,
-    spaceList
+    spaceList,
+    spaceDetail
 }

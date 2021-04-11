@@ -94,7 +94,7 @@ export const spaceList = (userId, obj) => {
                 const list = res['0'] || []
                 const total = res['1'][0].total || 0
                 list.map(item => {
-                    item.img_url = item.img_url ? item.img_url.split(',').map(child => child = ipAntPort + child) : []
+                    item.imgUrl = item.imgUrl ? item.imgUrl.split(',').map(child => child = ipAntPort + child) : []
                 })
                 resolve({
                     code:'0',
@@ -104,6 +104,54 @@ export const spaceList = (userId, obj) => {
                         pageSize:+obj.pageSize,
                         pageNum:+obj.pageNum
                     }
+                })
+            } else {
+                resolve({
+                    code:'999',
+                    msg:'查询异常'
+                })
+            }
+        }).catch(err => {
+            console.log('err',err)
+            reject(err)
+        })
+    })
+}
+
+/**
+ * 日记详情
+ * @param {*} userId 
+ * @param {*} obj 
+ * @returns 
+ */
+export const spaceDetail = (userId, obj) => {
+    return new Promise((resolve, reject) => {        
+        if (!userId) {
+            return resolve({
+                code:'20000',
+                msg:"请先登录"
+            })            
+        }
+        console.log(obj)
+        console.log(obj.id)
+        if (!obj.id || !obj.userId) {
+            return resolve({
+                code:'999',
+                msg:"请输入正确的查询参数"
+            })
+        }
+        spaceController.spaceDetail(obj).then(res => {
+            if (res && res[0]) {
+                const data = {}
+                Object.keys(res[0]).map(key => {
+                    data[key] = res[0][key]
+                    if (key === 'imgUrl') {
+                        data[key] = data.imgUrl ? data.imgUrl.split(',').map(child => child = ipAntPort + child) : []
+                    }
+                })
+                resolve({
+                    code:'0',
+                    data
                 })
             } else {
                 resolve({
